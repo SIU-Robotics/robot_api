@@ -25,10 +25,7 @@ class VideoCamera(threading.Thread):
 
     def run(self):
         while not self._stop_event.is_set():
-            if not self.response.closed:
-                (self.grabbed, self.frame) = self.video.read()
-            else:
-                self.stop()
+            (self.grabbed, self.frame) = self.video.read()
 
 
 def gen(cam):
