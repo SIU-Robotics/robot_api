@@ -1,4 +1,4 @@
 flask
 smbus2
 opencv_python
-flask_restful
+flask_socketio

@@ -31,8 +31,13 @@ class VideoCamera(threading.Thread):
 def gen(cam):
     while not cam._stop_event.is_set():
         try:
-            frame = cam.get_frame()
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+            success, frame = cam.read()
+            if not success:
+                break
+            else:
+                ret, buffer = cv2.imencode('.jpg', frame)
+                frame = buffer.tobytes()
+                yield (b'--frame\r\n'
+                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
         except Exception as e:
             cam.stop()
